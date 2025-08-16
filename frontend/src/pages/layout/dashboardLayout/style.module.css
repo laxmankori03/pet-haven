@@ -1,0 +1,10 @@
+.sidebarItem{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transition: all 0.3s ease;
+}
+.sidebarItem:hover{
+    scale: 1.05 !important;
+}
