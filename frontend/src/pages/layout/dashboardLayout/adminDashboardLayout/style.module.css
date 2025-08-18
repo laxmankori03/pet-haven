@@ -8,6 +8,3 @@
 .sidebarItem:hover{
     scale: 1.05 !important;
 }
-::-webkit-scrollbar {
-  display: none;
-}
