@@ -21,23 +21,17 @@ const allowedOrigins = [
 ];
 
 
+// ✅ CORS middleware
 app.use(cors({
-    origin: allowedOrigins, // Your frontend URL
-    credentials: true               // Important for cookies
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed for this origin: " + origin));
+    }
+  },
+  credentials: true, // cookies / headers allow karne ke liye
 }));
-
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true, // agar cookies / auth headers bhejne hain
-//   })
-// );
 
 app.use(express.json());
 app.use(cookieParser());
