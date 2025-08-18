@@ -17,7 +17,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000", // development
-    process.env.CLIENT_URL // production
+  "https://pet-haven-nine-swart.vercel.app" // production
 ];
 
 
