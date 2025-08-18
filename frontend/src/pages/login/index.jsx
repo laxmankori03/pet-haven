@@ -23,7 +23,7 @@ const Login = () => {
         if(authState.isLoggedIn && localStorage.getItem('token')){
           toast.success(authState.message || "Login successful");
 
-          if (authState.user.role === 'admin') {
+          if (authState.user?.role === 'admin') {
             router.push('/admin/dashboard');
           }else{
             router.push('/user/dashboard');

@@ -1,12 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import api from '../../axiosInstance.js'
 
 export const addHotelToProfile = createAsyncThunk(
     'hotel/addHotelToProfile',
     async(hotel,thunkAPI)=>{
         try {
-            const res = await axios.post("http://localhost:5000/api/profile/add-hotel",{
+            const res = await api.post("/api/profile/add-hotel",{
                  name:hotel.name,
       location:hotel.location,
       description:hotel.description,
@@ -24,7 +23,7 @@ export const fetchHotel = createAsyncThunk(
     'auth/fetchHotel',
     async(_,thunkAPI)=>{
         try {
-            const res = await axios.get("http://localhost:5000/api/profile/hotel_exist",{withCredentials:true});
+            const res = await api.get("/api/profile/hotel_exist",{withCredentials:true});
             return res.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
@@ -36,7 +35,7 @@ export const fetchAllHotels = createAsyncThunk(
     'get/hotels',
     async(_,thunkAPI)=>{
         try {
-            const res = await axios.get("http://localhost:5000/api/hotels",{withCredentials:true});
+            const res = await api.get("/api/hotels",{withCredentials:true});
             return res.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);

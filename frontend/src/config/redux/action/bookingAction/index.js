@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from '../../axiosInstance.js'
 
 
 export const createBooking = createAsyncThunk(
     'booking/createBooking',
     async(booking,thunkAPI)=>{
         try {
-            const res = await axios.post("http://localhost:5000/api/bookings",{
+            const res = await api.post("/api/bookings",{
                 hotel : booking.hotel,
                 pet : booking.pet,
                 services: booking.services,
@@ -24,7 +24,7 @@ export const getMyBookings = createAsyncThunk(
     "booking/getMyBookings",
     async(_,thunkAPI)=>{
         try {
-            const res = await axios.get("http://localhost:5000/api/bookings/mine",{withCredentials:true});
+            const res = await api.get("/api/bookings/mine",{withCredentials:true});
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || 'Something went wrong');
@@ -37,7 +37,7 @@ export const getAdminBookings = createAsyncThunk(
     'booking/getAdminBookings',
     async(_,thunkAPI)=>{
         try {
-            const res = await axios.get("http://localhost:5000/api/bookings/admin",{withCredentials:true});
+            const res = await api.get("/api/bookings/admin",{withCredentials:true});
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || 'Something went wrong');
@@ -49,7 +49,7 @@ export const updateBookingStatus = createAsyncThunk(
     'booking/updateBookingStatus',
     async({bookingId,status},thunkAPI)=>{
         try {
-            const res = await axios.patch(`http://localhost:5000/api/bookings/${bookingId}/status`,{status},{withCredentials:true});
+            const res = await api.patch(`/api/bookings/${bookingId}/status`,{status},{withCredentials:true});
             return  res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || 'Something went wrong');

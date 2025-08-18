@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../axiosInstance.js";
 
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async(user,thunkAPI)=>{
         try {
-            const res  = await axios.post('http://localhost:5000/api/auth/login', {
+            const res  = await api.post('/api/auth/login', {
                 email: user.email,
                 password: user.password
             },{withCredentials:true});
@@ -21,7 +21,7 @@ export  const registerUser = createAsyncThunk(
     'auth/registerUser',
     async(user,thunkAPI)=>{
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/register', {
+            const res = await api.post('/api/auth/register', {
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
@@ -41,7 +41,7 @@ export const fetchUser = createAsyncThunk(
         const token = localStorage.getItem("token");
         if(!token) return thunkAPI.rejectWithValue("No token");
         try {
-           const res = await axios.get("http://localhost:5000/api/auth/me", {withCredentials:true});
+           const res = await api.get("/api/auth/me", {withCredentials:true});
            return res.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
@@ -53,7 +53,7 @@ export const updateUser = createAsyncThunk(
     'auth/updateUser',
     async(user,thunkAPI)=>{
         try {
-            const res = await axios.patch("http://localhost:5000/api/auth/me/update",{name:user.name,phone:user.phone},{withCredentials:true});
+            const res = await api.patch("/api/auth/me/update",{name:user.name,phone:user.phone},{withCredentials:true});
             return res.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
