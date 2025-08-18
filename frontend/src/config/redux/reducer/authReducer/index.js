@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUser, loginUser, registerUser } from "../../action/authAction/index.js";
+import { fetchUser, loginUser, registerUser, updateUser } from "../../action/authAction/index.js";
 
 const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -32,7 +32,11 @@ const authSlice = createSlice({
       },
       setIsNotTokenThere: (state)=>{
         state.isTokenThere = false;
-      }
+      },
+      clearAuthMessage: (state) => {
+      state.message = null;
+      state.error = null;
+    },
     },
     extraReducers:(builder) => {
         builder
@@ -88,8 +92,19 @@ const authSlice = createSlice({
         state.token = null;
         localStorage.removeItem("token");
            })
+          .addCase(updateUser.pending,(state)=>{
+            state.loading = true;
+          })
+          .addCase(updateUser.fulfilled,(state,action)=>{
+            state.loading = false;
+            state.message = action.payload.message;
+          })
+          .addCase(updateUser.rejected,(state,action)=>{
+            state.loading = false;
+            state.error = action.payload.error
+          })
     }
 })
 
-export const { logout ,setIsNotTokenThere,setIsTokenThere} = authSlice.actions;
+export const { logout ,clearAuthMessage,setIsNotTokenThere,setIsTokenThere} = authSlice.actions;
 export default  authSlice.reducer;

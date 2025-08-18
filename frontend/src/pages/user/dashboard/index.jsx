@@ -1,5 +1,7 @@
 import React from 'react'
 import DashboardLayout from '@/pages/layout/dashboardLayout';
+import Link from 'next/link';
+import PetForm from '@/components/petForm';
 
 const Dashboard = () => {
   
@@ -38,8 +40,10 @@ const Dashboard = () => {
         </div>
         <div className='mt-5'>
         <h2>Quick Action</h2>
-        <button className='btn btn-primary mt-3 me-3'>Book Now</button>
-        <button className='btn btn-primary mt-3'>Add Pet</button>
+        <div className='d-flex'>
+        <Link href="/user/hostels"><button className='btn btn-primary mt-3 me-3'>Book Now</button></Link>
+        <PetForm/>
+        </div>
         </div>
         <div className='mt-4'>
         <h2>Notifications</h2>

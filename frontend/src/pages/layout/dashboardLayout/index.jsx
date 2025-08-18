@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import styles from './style.module.css';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsTokenThere } from '@/config/redux/reducer/authReducer';
+import { clearAuthMessage, setIsTokenThere } from '@/config/redux/reducer/authReducer';
 import { fetchUser } from '@/config/redux/action/authAction';
 
 const DashboardLayout = ({children}) => {

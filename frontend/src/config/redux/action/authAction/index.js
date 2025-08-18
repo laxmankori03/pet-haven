@@ -49,3 +49,14 @@ export const fetchUser = createAsyncThunk(
     }
 )
 
+export const updateUser = createAsyncThunk(
+    'auth/updateUser',
+    async(user,thunkAPI)=>{
+        try {
+            const res = await axios.patch("http://localhost:5000/api/auth/me/update",{name:user.name,phone:user.phone},{withCredentials:true});
+            return res.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+)

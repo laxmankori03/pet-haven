@@ -1,4 +1,4 @@
-import User from "../models/user.model.js";
+import User from "../models/User.model.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
@@ -53,4 +53,14 @@ export const login = async (req,res) => {
 
 export const getMe = async (req,res) => {
     res.status(200).json(req.user);
+}
+
+
+export const editUser = async (req,res) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate({_id:req.user._id},{...req.body});
+        res.status(201).json({message:"Profile Updated Succefull...",updatedUser});
+    } catch (error) {
+        res.status(500).json({message:"Error Update Profile",error:error.message});
+    }
 }

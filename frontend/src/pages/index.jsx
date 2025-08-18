@@ -1,8 +1,10 @@
 import CustomerReviews from '@/components/CustumerReview'
 import WhyChooseUs from '@/components/WhyChooseUs'
+import Link from 'next/link'
 import React from 'react'
 
 const Home = () => {
+  
   return (
     <>
      <div className='container d-flex align-items-center' style={{height: "92vh"}}>
@@ -10,7 +12,7 @@ const Home = () => {
         <div className="col-lg-6 col-sm-12 d-flex flex-column justify-content-center">
             <h1 style={{fontSize:"4rem"}} className='fw-bold mb-5'>Welcome to Pet Haven <br /> Luxury Stay for Pets! </h1>
             <div className='d-flex gap-3'>
-                <button className='btn btn-primary'>Book a stay</button>
+                <Link href='/user/hostels'><button className='btn btn-primary'>Book a stay</button></Link>
                 <button className='btn btn-primary'>See Services</button>
             </div>
         </div>

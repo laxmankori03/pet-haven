@@ -46,14 +46,13 @@ const PetForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addPet(petData));
-    console.log("Pet data:", petData);
     handleClose();
   };
 
   return (
     <div className="my-3">
       {/* Trigger Button */}
-      <Button variant="contained" color="primary" onClick={handleOpen}>
+      <Button variant="contained" color="primary" onClick={handleOpen} style={{backgroundColor:"#4DD0E1",borderColor:"#4DD0E1",color:"#1E1E2F"}}>
         + Add Pet
       </Button>
 

@@ -1,5 +1,5 @@
 import { fetchUser } from '@/config/redux/action/authAction';
-import { logout, setIsNotTokenThere } from '@/config/redux/reducer/authReducer';
+import { clearAuthMessage, logout, setIsNotTokenThere } from '@/config/redux/reducer/authReducer';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -15,6 +15,7 @@ const Navbar = () => {
   useEffect(() => {
     setHasMounted(true);
     dispatch(fetchUser());
+    dispatch(clearAuthMessage())
   }, []);
 
   const handleLogOut = () => {

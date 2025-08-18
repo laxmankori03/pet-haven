@@ -2,6 +2,7 @@ import PetCard from '@/components/petCard';
 import PetForm from '@/components/petForm';
 import ProfileCard from '@/components/ProfileCard';
 import { getPet } from '@/config/redux/action/petAction';
+import { clearAuthMessage } from '@/config/redux/reducer/authReducer';
 import DashboardLayout from '@/pages/layout/dashboardLayout'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,8 +14,6 @@ const Profile = () => {
   useEffect(()=>{
     dispatch(getPet());
   },[dispatch])
-  console.log(petState.pets);
-  
   return (
   <DashboardLayout>
        <div className="container mt-3">
