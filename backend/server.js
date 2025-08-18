@@ -21,23 +21,23 @@ const allowedOrigins = [
 ];
 
 
-// app.use(cors({
-//     origin: 'http://localhost:3000', // Your frontend URL
-//     credentials: true               // Important for cookies
-// }));
+app.use(cors({
+    origin: allowedOrigins, // Your frontend URL
+    credentials: true               // Important for cookies
+}));
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // agar cookies / auth headers bhejne hain
-  })
-);
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true, // agar cookies / auth headers bhejne hain
+//   })
+// );
 
 app.use(express.json());
 app.use(cookieParser());
