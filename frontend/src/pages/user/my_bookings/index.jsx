@@ -14,9 +14,13 @@ const MyBookings = () => {
     <DashboardLayout>
         <div className='container mt-3'>
           <h3 className='my-5'>Your Bookings</h3>
-          <div className='d-flex flex-wrap gap-3'>
+          {bookingState.bookings.length>0?(
+            <div className='d-flex flex-wrap gap-3'>
           {bookingState.bookings.map((booking)=>(<BookingCard booking={booking} key={booking._id}/>))}
           </div>
+          ):(
+            <p>No Bookings</p>
+          )}
     </div>
     </DashboardLayout>
   )

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUser, loginUser, registerUser, updateUser } from "../../action/authAction/index.js";
+import { fetchUser, loginUser, registerUser, updateUser, verifySignupOtp } from "../../action/authAction/index.js";
 
 const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -12,7 +12,8 @@ const initialState = {
     isLoggedIn: !!token,
     message: null,
     token: token || null,
-    isTokenThere: !!token
+    isTokenThere: !!token,
+    success:null
 };
 
 const authSlice = createSlice({
@@ -68,11 +69,13 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = null;
             state.message = action.payload.message || 'Registration successful';
-           })
-           .addCase(registerUser.rejected,(state,action)=>{
+            state.success = action.payload.success;
+          })
+          .addCase(registerUser.rejected,(state,action)=>{
             state.loading = false;
             state.error = action.payload || 'Registration failed';
             state.isLoggedIn = false;
+            state.success = action.payload.success;
            })
            .addCase(fetchUser.pending,(state)=>{
             state.loading = true;
@@ -102,6 +105,19 @@ const authSlice = createSlice({
           .addCase(updateUser.rejected,(state,action)=>{
             state.loading = false;
             state.error = action.payload.error
+          })
+          .addCase(verifySignupOtp.pending,(state)=>{
+            state.loading = true;
+          })
+          .addCase(verifySignupOtp.fulfilled,(state,action)=>{
+            state.loading = false;
+            state.message = action.payload.message;
+            state.success = action.payload.success
+          })
+          .addCase(verifySignupOtp.rejected,(state,action)=>{
+            state.loading = false;
+            state.error = action.payload.error;
+            state.success = action.payload.success
           })
     }
 })

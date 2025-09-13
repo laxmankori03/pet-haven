@@ -35,6 +35,21 @@ export  const registerUser = createAsyncThunk(
     }
 )
 
+export const verifySignupOtp = createAsyncThunk(
+    'auth/verifySignupOtp',
+    async(otpInfo,thunkAPI)=>{
+        try {
+            const res = await api.post('/api/auth/verify-signup-otp',{
+                email:otpInfo.email,
+                otp:otpInfo.otp
+            });
+            return res.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response?.data?.message || 'Something went wrong');
+        }
+    }
+)
+
 export const fetchUser = createAsyncThunk(
     "auth/fetchUser",
     async(_,thunkAPI)=>{

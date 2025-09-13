@@ -11,6 +11,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
+  // console.log(authState.user?.role);
+  
 
   useEffect(() => {
     setHasMounted(true);
@@ -37,11 +39,11 @@ const Navbar = () => {
       <div className='d-flex'>
       {(authState.isLoggedIn && localStorage.getItem("token")) ?
       (<><ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
+        {authState.user?.role === "user" ? <li className="nav-item">
           <Link href="/" className='nav-link text-white'>
           Home
           </Link>
-        </li>
+        </li> : ""}
         <li className="nav-item">
           <Link href={authState.user?.role === "user" ? "/user/dashboard":"/admin/dashboard"} className='nav-link text-white'>
           DashBoard

@@ -9,7 +9,7 @@ const Dashboard = () => {
    <DashboardLayout>
       <div className='container mt-3'>
         <h1>Welcome Laxman Kori</h1>
-        <div className='d-flex gap-5 flex-wrap mt-5'>
+        {/* <div className='d-flex gap-5 flex-wrap mt-5'>
           <div className="card bg-darkcard position-relative">
             <div className="card-body">
               <h5 className="card-title">Active Bookings</h5>
@@ -37,7 +37,7 @@ const Dashboard = () => {
   </span>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className='mt-5'>
         <h2>Quick Action</h2>
         <div className='d-flex'>

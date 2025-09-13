@@ -1,7 +1,7 @@
-import { registerUser } from "@/config/redux/action/authAction";
+import { registerUser, verifySignupOtp } from "@/config/redux/action/authAction";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -15,24 +15,52 @@ const Singup = () => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [role, setRole] = React.useState("user");
+  const [otp, setOtp] = useState("");
+const [step, setStep] = useState(1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(registerUser({ name, email, phone: phoneNumber, password, role }));
-    if (authState.error) {
-      toast.error(authState.error);
-    } else {
-      toast.success(authState.message || "Registration successful");
-      router.push("/login");
-    }
-  };
+    // if (authState.error) {
+    //   toast.error(authState.error);
+    // } else {
+      //   toast.success(authState.message);
+      //   setStep(2)
+      // }
+      
+      if (authState.success) {
+        toast.success(authState.message);
+        setStep(2)
+      }else{
+        toast.error(authState.error);
+      }
+    };
+    console.log(authState);
+    
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    dispatch(verifySignupOtp({email,otp}));
+    // if (authState.error) {
+    //   toast.error(authState.error);
+    // } else {
+      //   toast.success(authState.message || "Registration successful");
+      //   router.push("/login");
+      // }
+      if (authState.success) {
+        toast.success(authState.message || "Registration successful");
+        router.push("/login");
+      }else{
+          toast.error(authState.error);
+      }
+  }
 
   return (
     <div
       class="container d-flex justify-content-center align-items-center text-light"
       style={{ height: "90vh" }}
     >
-      <form
+      {step === 1 ?(
+        <form
         class="bg-darkcard p-4 rounded shadow"
         style={{ width: "100%", maxWidth: "450px" }}
         onSubmit={handleSubmit}
@@ -122,10 +150,49 @@ const Singup = () => {
             Create Account
           </button>
         )}
-        <p class="text-center mt-3 text-muted">
+        <p class="text-center mt-3 text-white">
           Already have an account? <Link href="/login">Login</Link>
         </p>
       </form>
+      ):(
+<form
+        class="bg-darkcard p-4 rounded shadow"
+        style={{ width: "100%", maxWidth: "450px" }}
+        onSubmit={handleVerifyOtp}
+      >
+        <h2 class="mb-4 text-center" style={{ color: "#4DD0E1" }}>
+          Verify your Pet Haven account 🐾
+        </h2>
+
+        <div class="mb-3">
+          <label class="form-label">OTP</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="XXXXX"
+            required
+            name="otp"
+            onChange={(e) => setOtp(e.target.value)}
+            value={otp}
+          />
+        </div>
+        {authState.loading ? (
+          <button class="btn btn-primary w-100 mt-2" type="button" disabled>
+            <span
+              class="spinner-border spinner-border-sm me-1"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Loading...
+          </button>
+        ) : (
+          <button type="submit" class="btn btn-primary w-100 mt-2">
+            Verify Account
+          </button>
+        )}
+      </form>
+      )
+      }
     </div>
   );
 };

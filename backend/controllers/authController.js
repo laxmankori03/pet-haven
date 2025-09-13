@@ -1,6 +1,8 @@
 import User from "../models/User.model.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import otpGenerator from "otp-generator";
+import nodemailer from "nodemailer";
 
 
 export const register = async (req, res) => {
@@ -8,22 +10,60 @@ export const register = async (req, res) => {
         const { name, email, phone, password ,role} = req.body;
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(400).json({success:false, message: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const otp = otpGenerator.generate(6,{upperCaseAlphabets:false,specialChars:false});
+        const otpExpires = Date.now() + 5 * 60 * 1000;
+
         const newUser = new User({
             name,
             email,
             phone,
             password:hashedPassword,
-            role
+            role,
+            otp,
+            otpExpires
         });
         await newUser.save();
-        res.status(201).json({message:"User registered successfully"});
+
+        const transporter = nodemailer.createTransport({
+            service:"gmail",
+            auth:{user:process.env.EMAIL,pass:process.env.EMAIL_PASS},
+        });
+        await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: email,
+            subject:"Verify your Pet Haven account",
+            text:`Your OTP is ${otp}. It expires in 5 minutes.`,
+        })
+        res.status(201).json({ success: true, message: "OTP sent to your gmail! Please verify to complete signup." });
     } catch (error) {
         res.status(500).json({message:"Error registering user", error: error.message});
     }
 };
+
+export const verifySignupOtp = async (req,res) => {
+    try {
+        const {email,otp} = req.body;
+        
+        const user = await User.findOne({email});
+        if(!user) return res.status(404).json({success:false,message:"User Not found!"});
+        if(user.verified) return res.status(400).json({message:"User already verified",success:true});
+
+        if (user.otp !== otp) return res.status(400).json({ success: false, message: "Invalid OTP" });
+        if (user.otpExpires < Date.now()) return res.status(400).json({ success: false, message: "OTP expired" });
+
+        user.verified = true;
+        user.otp = undefined;
+        user.otpExpires = undefined;
+        await user.save();
+        res.status(201).json({ success: true, message: "Signup completed successfully!" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
 
 export const login = async (req,res) => {
     try {
